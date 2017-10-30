@@ -35,6 +35,19 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/arquivos/ex01.o \
+	${OBJECTDIR}/arquivos/ex02.o \
+	${OBJECTDIR}/arquivos/ex03.o \
+	${OBJECTDIR}/arquivos/ex04.o \
+	${OBJECTDIR}/exemplos/ex01.o \
+	${OBJECTDIR}/exemplos/ex02.o \
+	${OBJECTDIR}/exemplos/ex03.o \
+	${OBJECTDIR}/exemplos/ex04.o \
+	${OBJECTDIR}/exemplos/ex05.o \
+	${OBJECTDIR}/exemplos/ex06.o \
+	${OBJECTDIR}/exemplos/ex07.o \
+	${OBJECTDIR}/exemplos/ex08.o \
+	${OBJECTDIR}/exemplos/ex10.o \
 	${OBJECTDIR}/main.o
 
 
@@ -61,6 +74,71 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/archiver: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/archiver ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/arquivos/ex01.o: arquivos/ex01.c
+	${MKDIR} -p ${OBJECTDIR}/arquivos
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/arquivos/ex01.o arquivos/ex01.c
+
+${OBJECTDIR}/arquivos/ex02.o: arquivos/ex02.c
+	${MKDIR} -p ${OBJECTDIR}/arquivos
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/arquivos/ex02.o arquivos/ex02.c
+
+${OBJECTDIR}/arquivos/ex03.o: arquivos/ex03.c
+	${MKDIR} -p ${OBJECTDIR}/arquivos
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/arquivos/ex03.o arquivos/ex03.c
+
+${OBJECTDIR}/arquivos/ex04.o: arquivos/ex04.c
+	${MKDIR} -p ${OBJECTDIR}/arquivos
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/arquivos/ex04.o arquivos/ex04.c
+
+${OBJECTDIR}/exemplos/ex01.o: exemplos/ex01.c
+	${MKDIR} -p ${OBJECTDIR}/exemplos
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/exemplos/ex01.o exemplos/ex01.c
+
+${OBJECTDIR}/exemplos/ex02.o: exemplos/ex02.c
+	${MKDIR} -p ${OBJECTDIR}/exemplos
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/exemplos/ex02.o exemplos/ex02.c
+
+${OBJECTDIR}/exemplos/ex03.o: exemplos/ex03.c
+	${MKDIR} -p ${OBJECTDIR}/exemplos
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/exemplos/ex03.o exemplos/ex03.c
+
+${OBJECTDIR}/exemplos/ex04.o: exemplos/ex04.c
+	${MKDIR} -p ${OBJECTDIR}/exemplos
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/exemplos/ex04.o exemplos/ex04.c
+
+${OBJECTDIR}/exemplos/ex05.o: exemplos/ex05.c
+	${MKDIR} -p ${OBJECTDIR}/exemplos
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/exemplos/ex05.o exemplos/ex05.c
+
+${OBJECTDIR}/exemplos/ex06.o: exemplos/ex06.c
+	${MKDIR} -p ${OBJECTDIR}/exemplos
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/exemplos/ex06.o exemplos/ex06.c
+
+${OBJECTDIR}/exemplos/ex07.o: exemplos/ex07.c
+	${MKDIR} -p ${OBJECTDIR}/exemplos
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/exemplos/ex07.o exemplos/ex07.c
+
+${OBJECTDIR}/exemplos/ex08.o: exemplos/ex08.c
+	${MKDIR} -p ${OBJECTDIR}/exemplos
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/exemplos/ex08.o exemplos/ex08.c
+
+${OBJECTDIR}/exemplos/ex10.o: exemplos/ex10.c
+	${MKDIR} -p ${OBJECTDIR}/exemplos
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/exemplos/ex10.o exemplos/ex10.c
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
