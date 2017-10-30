@@ -14,8 +14,8 @@ archives.
 - C5. Remover um arquivo de um archive, dado o nome do arquivo.
 
 **Relatório**
-O programa deve vir acompanhado de relatório sobre quais casos de uso foram implementados, e
+- O programa deve vir acompanhado de relatório sobre quais casos de uso foram implementados, e
 respectivas comprovações (trecho de código e tela de execução).
 
 **Referências**
-[1] Man page do comando ar. Disponível em https://man.cx/ar(16/10/2017).
+- [1] Man page do comando ar. Disponível em https://man.cx/ar(16/10/2017).
