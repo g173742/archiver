@@ -23,7 +23,7 @@ void Archiver::start() {
 }
 
 void Archiver::process() {
-  vector<string> opcoes({ "Exit", "List Database", "Insert Items" });
+  vector<string> opcoes({ "Exit", "New Archiver", "List Archives", "Extract Archive", "Insert Archive", "Remove Archive" });
   Menu menu("Main Menu", opcoes);
   int escolha = -1;
 
@@ -31,18 +31,30 @@ void Archiver::process() {
     escolha = menu.getEscolha();
 
     switch(escolha) {
-    case 1: {
-	cout << "List Items";
-      //listItems();
-    };
+	    case 1: {
+		cout << "New Archiver";	      
+	    };
+	    break;
 
-    break;
-    case 2: {
-	cout << "Insert Items";
-      //insertItems();
-    };
+	    case 2: {
+		cout << "List Archives";
+	    };
+	    break;
 
-    break;
+	    case 3: {
+		cout << "Extract Archive";
+	    };
+	    break;
+	    case 4: {
+		cout << "Insert Archive";
+	    };
+	    break;
+	    case 5: {
+		cout << "Remove Archive";
+	    };
+	    break;
+
+
     };
   };
 };
