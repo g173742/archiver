@@ -11,17 +11,25 @@ using namespace std;
   #define ARCHIVER_H
 
   #include <vector>
+  #include <string>
 
 class Archiver {
 
   public:
-    Archiver();
-    //void start(char**);    
-    void start();	
+    ~Archiver();  
+    Archiver();  
+    void start(void); 
+    void setName(string name);
+    string const getName();
 
   private:
-    //vector<Archive *> myMainList;
+    vector<string> archives;
+    string name;
     void process(void);
+    void createArchiver(void);
+    void insertArchive(string nameArchive, string name);
+    void listArchives(void);
+    bool const inArray(vector<string> array, string value);
 };
 
 #endif

@@ -7,16 +7,20 @@
 
 #include <string>
 #include <vector>
+#include <string>
 #include <iostream>
-#include <iomanip>
+#include <fstream>
+
 #include "Archiver.hpp"
-#include "Menu.hpp"
-#include "Information.hpp"
+#include "libs/Menu.hpp"
+#include "libs/Information.hpp"
 
 Archiver::Archiver() {}
+Archiver::~Archiver() {}
 
 void Archiver::start() {
-  //myMainList.clear();
+  archives.clear();
+  name = "";
   Information::wellcome("Wellcome to our Archiver! Be happy :) ");
   process();
   Information::bye();
@@ -32,12 +36,12 @@ void Archiver::process() {
 
     switch(escolha) {
 	    case 1: {
-		cout << "New Archiver";	      
+	    	createArchiver();	    	
 	    };
 	    break;
 
 	    case 2: {
-		cout << "List Archives";
+			listArchives();
 	    };
 	    break;
 
@@ -53,8 +57,99 @@ void Archiver::process() {
 		cout << "Remove Archive";
 	    };
 	    break;
-
-
     };
   };
 };
+
+void Archiver::createArchiver(){
+	
+	string buffer;
+	string nameArchive;	
+
+	cout << "------------------------------\nCriar Arquivador:\n------------------------------\n";
+
+	cout << "Informe o nome do archiver (sem a extensão): "; getline(cin, buffer);
+	setName(buffer);
+
+	cout << "\nInforme os arquivos a serem adicionados no archiver\n(0 para terminar de adicionar os arquivos)";
+	cout << "\nArquivo: ";
+	getline(cin, buffer);
+
+	while(buffer != "0"){
+
+	   nameArchive = buffer;
+	   cin.clear();
+	   
+	    if(!inArray(archives,nameArchive)){
+		   	archives.insert(archives.end(), nameArchive);		    
+		    cout << "Adicionado: " << nameArchive << "\n\nPróximo arquivo: ";
+		    getline(cin, buffer);
+				    
+	    }else{
+	    	cout << "O arquivo " << nameArchive << " não foi adicionado pois já está na lista de arquivos." << endl; 
+			cout << "\nPróximo arquivo: ";
+	    	getline(cin, buffer);
+	    }
+	}
+
+	nameArchive = "";
+	buffer = "";
+	cin.clear();
+
+	if(archives.size() == 0){
+		cout << "Nenhum arquivo foi adicionado.";
+	}else{
+
+		this->name += ".arc";
+
+		ifstream ifs ("test.txt", r);
+
+		if (ifs.is_open()) {
+		    // print file:
+		    char c = ifs.get();
+		    while (ifs.good()) {
+		      std::cout << c;
+		      c = ifs.get();
+		    }
+		}
+		else {
+		    // show message:
+		    std::cout << "Error opening file";
+		}
+
+		cout << archives.size() << " arquivo(s) adicionado(s).";
+	}
+}
+
+void Archiver::listArchives(){
+	cout << "------------------------------\nListar Arquivos:\n------------------------------\n";
+
+	if(archives.size() > 0){
+		int i =0;
+
+		for(string v : archives)
+			cout << ++i << " - " << v << endl;		
+	}else{
+		cout << "Não há arquivos para listar, para isso crie um arquivador com os arquivos desejados.";
+	}
+}
+
+bool const Archiver::inArray(vector<string> array, string value){
+	for(string v : array)
+		if(v == value)
+			return true;
+		
+	return false;
+}
+
+void Archiver::insertArchive(string nameArchive, string name){
+
+}
+
+string const Archiver::getName(){
+	return this->name;
+}
+
+void Archiver::setName(string name){
+	this->name = name;
+}
