@@ -25,6 +25,7 @@ class Archiver {
   private:
     vector<string> archives;
     string name;
+    string indexName;
     void process(void);
     void createArchiver(void);
     void insertArchive(string nameArchive, string name);

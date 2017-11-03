@@ -21,6 +21,7 @@ Archiver::~Archiver() {}
 void Archiver::start() {
   archives.clear();
   name = "";
+  indexName = "";
   Information::wellcome("Wellcome to our Archiver! Be happy :) ");
   process();
   Information::bye();
@@ -96,28 +97,32 @@ void Archiver::createArchiver(){
 	buffer = "";
 	cin.clear();
 
-	if(archives.size() == 0){
-		cout << "Nenhum arquivo foi adicionado.";
-	}else{
+	if(archives.size() > 0){
+		
+		this->name += ".acv";
+		this->indexName += ".idx";
 
-		this->name += ".arc";
+		fstream fs;
+		fs.open(this->name, std::fstream::out| std::fstream::binary);
 
-		ifstream ifs ("test.txt", r);
+		if(fs.is_open()){
+			fstream fsArchive;
+			for(string arc : this->archives){
+				fsArchive.open(arc, std::fstream::out | std::fstream::binary);
+				if(fsArchive.is_open()){
+					fs.write((char *) &eofOffset, sizeof(int));
+				}				
+			}
+		}else{
+			cout << "Houve um erro ao abrir o arquivo.\n";
+		}	
 
-		if (ifs.is_open()) {
-		    // print file:
-		    char c = ifs.get();
-		    while (ifs.good()) {
-		      std::cout << c;
-		      c = ifs.get();
-		    }
-		}
-		else {
-		    // show message:
-		    std::cout << "Error opening file";
-		}
+		fs.close();
 
 		cout << archives.size() << " arquivo(s) adicionado(s).";
+
+	}else{
+           cout << "Nenhum arquivo foi adicionado.";		
 	}
 }
 
