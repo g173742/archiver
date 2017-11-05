@@ -272,5 +272,5 @@ string const Archiver::getName(){
 }
 
 void Archiver::setName(string name){
-	this->name = name+".txt";
+	this->name = name+".aagl";
 }
