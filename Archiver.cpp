@@ -10,6 +10,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <math.h>
 
 #include "Archiver.hpp"
 #include "libs/Menu.hpp"
@@ -64,6 +65,7 @@ void Archiver::process() {
 
 void Archiver::createArchiver(){
 	
+	archives.clear();
 	string buffer;
 	string nameArchive;	
 
@@ -83,38 +85,113 @@ void Archiver::createArchiver(){
 	   
 	    if(!inArray(archives,nameArchive)){
 		   	archives.insert(archives.end(), nameArchive);		    
-		    cout << "Adicionado: " << nameArchive << "\n\nPróximo arquivo: ";
+		    cout << "\nPróximo arquivo: ";
 		    getline(cin, buffer);
 				    
 	    }else{
-	    	cout << "O arquivo " << nameArchive << " não foi adicionado pois já está na lista de arquivos." << endl; 
+	    	cout << "\n\nO arquivo " << nameArchive << " não foi adicionado pois já está na lista de arquivos." << endl; 
 			cout << "\nPróximo arquivo: ";
 	    	getline(cin, buffer);
 	    }
 	}
 
 	nameArchive = "";
-	buffer = "";
+	buffer.clear();
 	cin.clear();
 
-	if(archives.size() > 0){
+	if(this->archives.size() > 0){
 		
-		this->name += ".acv";
-		this->indexName += ".idx";
+		this->name += ".txt";
+		this->indexName += ".txt";
 
-		fstream fs;
-		fs.open(this->name, std::fstream::out| std::fstream::binary);
+		ofstream fs (this->name, std::ofstream::binary);
 
-		if(fs.is_open()){
-			fstream fsArchive;
-			for(string arc : this->archives){
-				fsArchive.open(arc, std::fstream::out | std::fstream::binary);
-				if(fsArchive.is_open()){
-					fs.write((char *) &eofOffset, sizeof(int));
+		if(fs){
+			
+			//escreve quantidade de arquivos a serem incluidos
+			fs.seekp(0);
+			std::string qtdArc = std::to_string(this->archives.size());
+
+			for(int i=0; i<qtdArc.size(); i++){
+				fs.put(qtdArc[i]);
+			}
+			
+			//escreve cabeçalho
+			for(string arc : this->archives){						
+				
+				ifstream fsArchive (arc, std::ifstream::binary);
+				if(fsArchive){
+
+					// get length of file:
+					fsArchive.seekg (0, fsArchive.end);
+					int length = fsArchive.tellg();
+					fsArchive.seekg (0, fsArchive.beg);
+
+					char * bufferArc = new char [length];			
+
+					if (fsArchive){
+					
+						fs.write("V", 1);
+
+						for(int i =0; i<arc.size(); i++){
+							fs.put(arc[i]);
+						}												
+
+						std::string str = std::to_string(length);
+
+						for(int i=0; i<str.size(); i++){
+							fs.put(str[i]);	
+						}					
+					  
+					}else{
+					  cout << "Erro ao ler o arquivo  " << arc << "\n";
+					}
+					fsArchive.close();
+
+					// ...buffer contains the entire file...
+					delete[] bufferArc;
+					
+				}else{
+					cout << "Houve um erro ao abrir o arquivo " << arc << "\n";
+				}				
+			}			
+
+			fs.write("###!|\n",6);
+
+			//escreve arquivos
+			for(string arc : this->archives){						
+				
+				ifstream fsArchive (arc, std::ifstream::binary);		
+				if(fsArchive){
+
+					// get length of file:
+					fsArchive.seekg (0, fsArchive.end);
+					int length = fsArchive.tellg();
+					fsArchive.seekg (0, fsArchive.beg);
+
+					char * bufferArc = new char [length];			
+					
+					// read data as a block:
+					fsArchive.read (bufferArc,length);
+
+					if (fsArchive){										
+					
+						fs.write (bufferArc,length);							
+					  
+					}else{
+					  cout << "Erro ao ler o arquivo  " << arc << "\n";
+					}
+					fsArchive.close();
+
+					// ...buffer contains the entire file...
+					delete[] bufferArc;
+					
+				}else{
+					cout << "Houve um erro ao abrir o arquivo " << arc << "\n";
 				}				
 			}
 		}else{
-			cout << "Houve um erro ao abrir o arquivo.\n";
+			cout << "Houve um erro ao criar o arquivador.\n";
 		}	
 
 		fs.close();
