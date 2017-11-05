@@ -100,9 +100,6 @@ void Archiver::createArchiver(){
 	cin.clear();
 
 	if(this->archives.size() > 0){
-		
-		this->name += ".txt";
-		this->indexName += ".txt";
 
 		ofstream fs (this->name, std::ofstream::binary);
 
@@ -133,14 +130,18 @@ void Archiver::createArchiver(){
 					
 						fs.write("V", 1);
 
+						//escreve nome do arquivo
 						for(int i =0; i<arc.size(); i++){
 							fs.put(arc[i]);
-						}												
+						}					
+
+						fs.put('/');							
 
 						std::string str = std::to_string(length);
 
+						//escreve tamanho do arquivo
 						for(int i=0; i<str.size(); i++){
-							fs.put(str[i]);	
+							fs.put(str[i]);
 						}					
 					  
 					}else{
@@ -156,7 +157,7 @@ void Archiver::createArchiver(){
 				}				
 			}			
 
-			fs.write("###!|\n",6);
+			fs.write("###!|aagl\n",10);
 
 			//escreve arquivos
 			for(string arc : this->archives){						
@@ -204,15 +205,53 @@ void Archiver::createArchiver(){
 }
 
 void Archiver::listArchives(){
+	
+	string buffer;
+	string nameArchive;
+	char valido;
+
 	cout << "------------------------------\nListar Arquivos:\n------------------------------\n";
 
-	if(archives.size() > 0){
-		int i =0;
+	cout << "Digite o nome do archive desejado: "; getline(cin, buffer);
+	setName(buffer);
 
-		for(string v : archives)
-			cout << ++i << " - " << v << endl;		
+	ifstream fs (this->name, std::ifstream::binary);
+
+	if(fs){
+
+		char qtdArcTemp;
+		int qtdArc;
+		string nameArquivo;
+		int cont = 0;		
+
+		//pega quantidade de arquivos no archive
+		fs.get(qtdArcTemp);
+		qtdArc = (int) qtdArcTemp;
+
+
+		cout << "\nArquivos encontrados em " << getName() << ":\n";
+
+		for(int i=0; i<qtdArc; i++){
+			fs.get(valido);
+
+			nameArquivo = "";
+
+			if(valido == 'V'){
+				char c;
+				fs.get(c);
+
+				while(c != '/'){
+					
+					nameArquivo += c;
+					fs.get(c);
+				}
+
+				cout << ++cont << " - " <<  nameArquivo << "\n";
+			}
+		}
+		
 	}else{
-		cout << "Não há arquivos para listar, para isso crie um arquivador com os arquivos desejados.";
+		cout << "Houve um erro ao abrir o archive " << this->name << "\n";
 	}
 }
 
@@ -233,5 +272,5 @@ string const Archiver::getName(){
 }
 
 void Archiver::setName(string name){
-	this->name = name;
+	this->name = name+".txt";
 }
