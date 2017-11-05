@@ -28,8 +28,9 @@ class Archiver {
     string indexName;
     void process(void);
     void createArchiver(void);
-    void insertArchive(string nameArchive, string name);
+    void insertArchive(void);
     void listArchives(void);
+    void removeArchive(void);
     bool const inArray(vector<string> array, string value);
 };
 

@@ -52,11 +52,12 @@ void Archiver::process() {
 	    };
 	    break;
 	    case 4: {
-		cout << "Insert Archive";
+			insertArchive();
 	    };
 	    break;
+
 	    case 5: {
-		cout << "Remove Archive";
+			removeArchive();
 	    };
 	    break;
     };
@@ -135,7 +136,7 @@ void Archiver::createArchiver(){
 							fs.put(arc[i]);
 						}					
 
-						fs.put('/');							
+						fs.put('/');
 
 						std::string str = std::to_string(length);
 
@@ -212,7 +213,7 @@ void Archiver::listArchives(){
 
 	cout << "------------------------------\nListar Arquivos:\n------------------------------\n";
 
-	cout << "Digite o nome do archive desejado: "; getline(cin, buffer);
+	cout << "Digite o nome do archive desejado: (sem a extensão)"; getline(cin, buffer);
 	setName(buffer);
 
 	ifstream fs (this->name, std::ifstream::binary);
@@ -255,6 +256,233 @@ void Archiver::listArchives(){
 	}
 }
 
+void Archiver::removeArchive(){
+	
+	string buffer;
+	string nameArchive;
+
+	cout << "------------------------------\nRemover Arquivo:\n------------------------------\n";
+
+	cout << "Digite o nome do archive desejado (sem a extensão): "; getline(cin, buffer);
+	setName(buffer);
+
+	cout << "Digite o nome do arquivo a ser removido: "; getline(cin, buffer);
+	nameArchive = buffer;
+
+	buffer = "";
+
+	ifstream fs (this->name, std::ifstream::binary);
+
+	if(fs){
+		
+		int qtdArc = 0; //quantidade de arquivos
+		string nameArquivo = ""; //nome do arquivo dentro do archive
+		bool encontrou = false; //encontrou ou não o arquivo pedido pelo usuário	 
+		int x = 0; // posição no conteudo
+
+
+		//pega tamanho do arquivo
+	    fs.seekg (0, fs.end);
+	    int length = fs.tellg();
+	    fs.seekg (0, fs.beg);
+
+	    //conteudo do arquivo
+	    char * conteudo = new char [length];
+
+	    //le conteudo
+	    fs.read(conteudo,length);
+
+	    //fecha conexão
+	    fs.close();
+
+	    //pega quantidade de arquivos no archive
+	    qtdArc = (int) conteudo[0];
+
+	    //realiza operações abaixo de acordo com a quantidade de arquivos no archiver
+	    for(int i = 0; i < qtdArc; i++){
+
+	    	nameArquivo.clear();
+	    		    
+	    	//chega até o V ou F
+	    	while(conteudo[x] != 'V' && conteudo[x] != 'F'){
+				x++;	    	
+	    	}	   
+
+	    	//se o arquivo não está excluído
+	    	if(conteudo[x] == 'V'){	    	
+
+	    		//incrementa x para sair do V
+	    		x++;
+
+	    		//procura a / que indica final do nome do arquivo
+	    		while(conteudo[x] != '/'){
+					nameArquivo += conteudo[x];	    			
+					x++;	
+	    		}	    	
+	    		
+	    		//se o arquivo lido é o procurado pelo usuário
+	    		if(nameArchive == nameArquivo){
+
+	    			//seta arquivo como excluido
+	    			conteudo[x - (nameArquivo.size()+1)] = 'F';
+	    			encontrou = true;
+	    		
+	    			//abre arquivo novamente
+	    			ofstream fs (this->name, std::ofstream::binary); 
+
+	    			//coloca nele o novo conteudo, já com a remoção
+	    			fs.write(conteudo,length);
+	    			fs.close();
+	    			delete[] conteudo;
+
+	    			cout << "Exclusão relaizada com sucesso.\n";
+
+	    			break;
+	    		}
+
+	    	}
+	    }
+
+		if(!encontrou){
+			cout << "O arquivo " << nameArchive << " não foi encontrado em " << getName();
+		}
+		
+	}else{
+		cout << "Houve um erro ao abrir o archive " << this->name << "\n";
+	}
+}
+
+
+void Archiver::insertArchive(){
+	
+	string buffer;
+	string nameArchive;
+
+	cout << "------------------------------\nInsetir Arquivo:\n------------------------------\n";
+
+	cout << "Digite o nome do archive desejado (sem a extensão): "; getline(cin, buffer);
+	setName(buffer);
+
+	cout << "Digite o nome do arquivo a ser inseriod: "; getline(cin, buffer);
+	nameArchive = buffer;
+
+	buffer = "";
+
+	ifstream fs (this->name, std::ifstream::binary);
+
+	if(fs){
+		
+		/*int qtdArc = 0; //quantidade de arquivos
+		string nameArquivo = ""; //nome do arquivo dentro do archive
+		bool encontrou = false; //encontrou ou não o arquivo pedido pelo usuário	 */
+		int x = 1; // posição no conteudo
+
+
+		//pega tamanho do arquivo
+	    fs.seekg (0, fs.end);
+	    int length = fs.tellg();
+	    fs.seekg (0, fs.beg);
+
+	    //conteudo do arquivo
+	    char * conteudo = new char [length];
+
+	    //le conteudo
+	    fs.read(conteudo,length);
+
+	    //fecha conexão
+	    fs.close();
+	   	
+	   	ifstream fs (nameArchive, std::fstream::binary);
+
+	   	if(fs){
+	   		fs.seekg (0, fs.end);
+		    int lengthArc = fs.tellg();
+		    fs.seekg (0, fs.beg);
+		
+			//conteudo do arquivo
+	    	char * bufferArc = new char [lengthArc];
+
+	    	int qtdArc = (int) conteudo[0]-48;
+	    	qtdArc++;
+	    
+	    	string comeco = to_string(qtdArc);
+
+		    string fim = "";
+		    string meio = "";
+
+		    meio = "V" + nameArchive + "/" + to_string(lengthArc);
+
+		   	//percorre até achar marcador de final de cabeçalho
+		   	while(conteudo[x] != '\n'){
+		   		comeco += conteudo[x];
+		   		x++;
+		   	}		   
+
+		   	while(conteudo[x] != '\0'){
+		   		fim += conteudo[x];
+		   		x++;
+		   	}		 
+			conteudo = comeco +""+ meio +""+ fim; 		  		  
+
+				//parei aqui
+	   	}else{
+	   		cout << "O arquivo "<< nameArchive << " não foi encontrado \n\n";
+	   	}	   
+
+	    /*//realiza operações abaixo de acordo com a quantidade de arquivos no archiver
+	    for(int i = 0; i < qtdArc; i++){
+
+	    	nameArquivo.clear();
+	    		    
+	    	//chega até o V ou F
+	    	while(conteudo[x] != 'V' && conteudo[x] != 'F'){
+				x++;	    	
+	    	}	   
+
+	    	//se o arquivo não está excluído
+	    	if(conteudo[x] == 'V'){	    	
+
+	    		//incrementa x para sair do V
+	    		x++;
+
+	    		//procura a / que indica final do nome do arquivo
+	    		while(conteudo[x] != '/'){
+					nameArquivo += conteudo[x];	    			
+					x++;	
+	    		}	    	
+	    		
+	    		//se o arquivo lido é o procurado pelo usuário
+	    		if(nameArchive == nameArquivo){
+
+	    			//seta arquivo como excluido
+	    			conteudo[x - (nameArquivo.size()+1)] = 'F';
+	    			encontrou = true;
+	    		
+	    			//abre arquivo novamente
+	    			ofstream fs (this->name, std::ofstream::binary); 
+
+	    			//coloca nele o novo conteudo, já com a remoção
+	    			fs.write(conteudo,length);
+	    			fs.close();
+	    			delete[] conteudo;
+
+	    			cout << "Exclusão relaizada com sucesso.\n";
+
+	    			break;
+	    		}
+
+	    	}
+	    }
+
+		if(!encontrou){
+			cout << "O arquivo " << nameArchive << " não foi encontrado em " << getName();
+		}*/
+		
+	}else{
+		cout << "Houve um erro ao abrir o archive " << this->name << "\n";
+	}
+} 
+
 bool const Archiver::inArray(vector<string> array, string value){
 	for(string v : array)
 		if(v == value)
@@ -263,14 +491,10 @@ bool const Archiver::inArray(vector<string> array, string value){
 	return false;
 }
 
-void Archiver::insertArchive(string nameArchive, string name){
-
-}
-
 string const Archiver::getName(){
 	return this->name;
 }
 
 void Archiver::setName(string name){
-	this->name = name+".txt";
+	this->name = name+".aagl";
 }
