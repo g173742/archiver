@@ -206,7 +206,7 @@ void Archiver::listArchives(){
 
 	cout << "------------------------------\nListar Arquivos:\n------------------------------\n";
 
-	cout << "Digite o nome do archive desejado: (sem a extensão)"; getline(cin, buffer);
+	cout << "Digite o nome do archive desejado(sem a extensão): "; getline(cin, buffer);
 	setName(buffer);
 
 	ifstream fs (this->name, std::ifstream::binary);
