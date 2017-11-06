@@ -1,10 +1,3 @@
-/* Unicamp - Universidade Estadual de Campinas
-   FT - Faculdade de Tecnologia
-   Limeira - SP
-   Prof. Dr. Andre F. de Angelis
-   Mar/2016
-*/
-
 #include <string>
 #include <vector>
 #include <string>
@@ -23,13 +16,13 @@ void Archiver::start() {
   archives.clear();
   name = "";
   indexName = "";
-  Information::wellcome("Wellcome to our Archiver! Be happy :) ");
+  Information::wellcome("Bem-vindo ao nosso Archiver!");
   process();
   Information::bye();
 }
 
 void Archiver::process() {
-  vector<string> opcoes({ "Exit", "New Archiver", "List Archives", "Extract Archive", "Insert Archive", "Remove Archive" });
+  vector<string> opcoes({ "Exit", "Novo Archiver", "Listar Arquivos", "Extrair Arquivo", "Inserir Arquivo", "Remover Arquivo" });
   Menu menu("Main Menu", opcoes);
   int escolha = -1;
 
@@ -335,7 +328,7 @@ void Archiver::removeArchive(){
 	    			fs.close();
 	    			delete[] conteudo;
 
-	    			cout << "Exclusão relaizada com sucesso.\n";
+	    			cout << "Exclusão realizada com sucesso.\n";
 
 	    			break;
 	    		}

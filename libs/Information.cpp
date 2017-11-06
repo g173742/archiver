@@ -1,17 +1,10 @@
-/* Unicamp - Universidade Estadual de Campinas
-   FT - Faculdade de Tecnologia
-   Limeira - SP
-   Prof. Dr. Andre F. de Angelis
-   Mar/2016
-*/
-
 #include <iostream>
 #include "Information.hpp"
 
 using namespace std;
 
-const string Information::project     = "File Structs - Archiver";
-const string Information::team        = "Alexandre Katao, Guilherme Garcia, Lais Bueno";
+const string Information::project     = "Archiver";
+const string Information::team        = "Alex Rafael, Guilherme Garcia, Lais Bueno";
 const string Information::decoration  = "************************************************************************\n";
 
 const string Information::getProject() {
@@ -38,7 +31,7 @@ const void Information::wellcome(string message) {
 
 const void Information::bye() {
   cout << decoration;
-  cout << "Bye, we see you ! \n";
+  cout << "Te vejo na próxima! \n";
   cout << decoration;
   cout << "\n\n" << endl;
 };
