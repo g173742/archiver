@@ -415,59 +415,14 @@ void Archiver::insertArchive(){
 		   		fim += conteudo[x];
 		   		x++;
 		   	}		 
-			conteudo = comeco +""+ meio +""+ fim; 		  		  
+			string novoConteudo = comeco +""+ meio +""+ fim; 		  		  
 
 				//parei aqui
 	   	}else{
 	   		cout << "O arquivo "<< nameArchive << " não foi encontrado \n\n";
 	   	}	   
 
-	    /*//realiza operações abaixo de acordo com a quantidade de arquivos no archiver
-	    for(int i = 0; i < qtdArc; i++){
-
-	    	nameArquivo.clear();
-	    		    
-	    	//chega até o V ou F
-	    	while(conteudo[x] != 'V' && conteudo[x] != 'F'){
-				x++;	    	
-	    	}	   
-
-	    	//se o arquivo não está excluído
-	    	if(conteudo[x] == 'V'){	    	
-
-	    		//incrementa x para sair do V
-	    		x++;
-
-	    		//procura a / que indica final do nome do arquivo
-	    		while(conteudo[x] != '/'){
-					nameArquivo += conteudo[x];	    			
-					x++;	
-	    		}	    	
-	    		
-	    		//se o arquivo lido é o procurado pelo usuário
-	    		if(nameArchive == nameArquivo){
-
-	    			//seta arquivo como excluido
-	    			conteudo[x - (nameArquivo.size()+1)] = 'F';
-	    			encontrou = true;
-	    		
-	    			//abre arquivo novamente
-	    			ofstream fs (this->name, std::ofstream::binary); 
-
-	    			//coloca nele o novo conteudo, já com a remoção
-	    			fs.write(conteudo,length);
-	    			fs.close();
-	    			delete[] conteudo;
-
-	    			cout << "Exclusão relaizada com sucesso.\n";
-
-	    			break;
-	    		}
-
-	    	}
-	    }
-
-		if(!encontrou){
+	    /*if(!encontrou){
 			cout << "O arquivo " << nameArchive << " não foi encontrado em " << getName();
 		}*/
 		
