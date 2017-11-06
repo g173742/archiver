@@ -365,11 +365,7 @@ void Archiver::insertArchive(){
 
 	if(fs){
 		
-		/*int qtdArc = 0; //quantidade de arquivos
-		string nameArquivo = ""; //nome do arquivo dentro do archive
-		bool encontrou = false; //encontrou ou não o arquivo pedido pelo usuário	 */
 		int x = 1; // posição no conteudo
-
 
 		//pega tamanho do arquivo
 	    fs.seekg (0, fs.end);
@@ -403,29 +399,76 @@ void Archiver::insertArchive(){
 		    string fim = "";
 		    string meio = "";
 
-		    meio = "V" + nameArchive + "/" + to_string(lengthArc);
+		    meio = "V" + nameArchive + "/" + to_string(lengthArc) + "###!|aagl";
 
 		   	//percorre até achar marcador de final de cabeçalho
-		   	while(conteudo[x] != '\n'){
+		   	while(conteudo[x] != '#'){
 		   		comeco += conteudo[x];
 		   		x++;
-		   	}		   
+		   	}
+
+		   	while(conteudo[x] != '\n'){
+		   		x++;
+		   	}
 
 		   	while(conteudo[x] != '\0'){
 		   		fim += conteudo[x];
 		   		x++;
-		   	}		 
-			string novoConteudo = comeco +""+ meio +""+ fim; 		  		  
+		   	}
 
-				//parei aqui
+			string novoConteudo = comeco +""+ meio +""+ fim;
+
+			ofstream fs (this->name, std::ofstream::binary); 
+
+	    	//coloca nele o novo conteudo, já com a remoção
+			for(int i=0; i < novoConteudo.size(); i++){
+				fs.put(novoConteudo[i]);	
+			}
+	    	
+	    	fs.close();
+	    	delete[] conteudo;
+	    	delete[] bufferArc;
+
+	    	ifstream fsArchive (nameArchive, std::ifstream::binary);	    	
+	    
+	    	if(fsArchive){
+	    		    		
+	    	 	//pega tamanho do arquivo
+			    fsArchive.seekg (0, fsArchive.end);
+			    int length = fsArchive.tellg();
+			    fsArchive.seekg (0, fsArchive.beg);
+
+			    //conteudo do arquivo
+			    char * bufferArc = new char [length];
+
+			    //le conteudo
+			    fsArchive.read(bufferArc,length);
+
+			    //fecha conexão
+			    fsArchive.close();
+
+			    ofstream fs (this->name, std::ofstream::app);
+
+			    if(fs){
+			    	fs.write(bufferArc, length);
+
+			    	if(fs){
+			    		cout << "Arquivo inserido com sucesso!";
+			    	}else{
+			    		cout << "Houve um erro ao inserir o arquivo: " << getName() << "\n";
+			    	}
+			    }else{
+			    	cout << "Erro ao inserir o arquivo. \n";
+			    }
+
+	    	}else{
+	    		cout << "Erro ao inserir o arquivo. \n";
+	    	}
+			
 	   	}else{
 	   		cout << "O arquivo "<< nameArchive << " não foi encontrado \n\n";
 	   	}	   
 
-	    /*if(!encontrou){
-			cout << "O arquivo " << nameArchive << " não foi encontrado em " << getName();
-		}*/
-		
 	}else{
 		cout << "Houve um erro ao abrir o archive " << this->name << "\n";
 	}
